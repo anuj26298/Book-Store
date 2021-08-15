@@ -1,8 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './card.scss';
-import BookStoreService from "../../service/BookStoreService";
 
 function BookCard(props){
+    const [cart,setCart]=useState([])
+
+    function addToCart(book) {
+        // var carts=[]
+        // if(JSON.parse(localStorage.getItem('book'))!==null)
+        //     carts.push(JSON.parse(localStorage.getItem('book')))
+        // carts.push(book)
+        // localStorage.setItem("books",JSON.stringify(carts))
+        let cart = JSON.parse(localStorage.getItem("cart"));
+        if(cart){
+            let books = cart.find(bookData => bookData.id===book.id);
+            if(!books){
+                cart.push(book);
+            }
+        }
+        else{
+            cart = [book];
+        }
+        localStorage.setItem("cart",JSON.stringify(cart));
+    }
 
     return(
         <>
@@ -15,7 +34,7 @@ function BookCard(props){
                             <span className="text">by {book.author}</span>
                             <h4 className="book-price">Rs. {book.price}</h4>
                             <div className="buttons">
-                                <button className="button-cart">ADD TO CART</button>
+                                <button className="button-cart" onClick={()=>addToCart(book)}>ADD TO CART</button>
                                 <button className="button-wishlist">WISHLIST</button>
                             </div>
                         </div>
