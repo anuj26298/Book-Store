@@ -13,6 +13,19 @@ class HomePage extends React.Component{
         };
         this.bookStoreService = new BookStoreService();
     }
+    getPersons=()=>{
+        this.bookStoreService.getAllBooks()
+            .then(responseDTO => {
+                let responseData = responseDTO;
+                console.log("Data received after GET Call :\n" + responseData.data);
+                this.setState({bookData: responseData.data},()=>console.log(this.state.bookData));
+            }).catch(errror => {
+            console.log("Error while fetching Employee List\nError : " + JSON.stringify(errror));
+        })
+    }
+    componentDidMount() {
+        this.getPersons()
+    }
 
     render() {
         return(
@@ -21,7 +34,7 @@ class HomePage extends React.Component{
             <div className="book-details">
                 <h3 className="heading">Books</h3>
 
-                <Card></Card>
+                <Card bookDetails={this.state.bookData} />
             </div>
             </>
         )
